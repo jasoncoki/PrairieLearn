@@ -49,6 +49,13 @@ set -x -e
 dropdb ${TMP_DB} || true # don't stop on error
 createdb --template=${TEMPLATE_DB} ${TMP_DB}
 
+# drop pg_stat_statements
+
+psql --dbname=${TMP_DB} --file=- <<EOF
+drop extension pg_stat_statements;
+\gexec
+EOF
+
 # drop all unnecessary tables
 
 psql --dbname=${TMP_DB} --file=- <<EOF
@@ -81,8 +88,7 @@ join assessments as a on (a.id = ai.assessment_id)
 join course_instances as ci on (ci.id = a.course_instance_id)
 join pl_courses as c on (c.id = ci.course_id)
 join enrollments as e on (e.user_id = ai.user_id and e.course_instance_id = ci.id)
-where c.short_name = '${COURSE_SHORT_NAME}'
-and ci.short_name = '${COURSE_INSTANCE_SHORT_NAME}';
+where c.short_name = '${COURSE_SHORT_NAME}';
 EOF
 
 psql --dbname=${TMP_DB} --file=- <<EOF
@@ -94,8 +100,7 @@ join assessments as a on (a.id = ai.assessment_id)
 join course_instances as ci on (ci.id = a.course_instance_id)
 join pl_courses as c on (c.id = ci.course_id)
 join enrollments as e on (e.user_id = ai.user_id and e.course_instance_id = ci.id)
-where c.short_name = '${COURSE_SHORT_NAME}'
-and ci.short_name = '${COURSE_INSTANCE_SHORT_NAME}';
+where c.short_name = '${COURSE_SHORT_NAME}';
 EOF
 
 psql --dbname=${TMP_DB} --file=- <<EOF
@@ -108,8 +113,7 @@ join assessments as a on (a.id = ai.assessment_id)
 join course_instances as ci on (ci.id = a.course_instance_id)
 join pl_courses as c on (c.id = ci.course_id)
 join enrollments as e on (e.user_id = ai.user_id and e.course_instance_id = ci.id)
-where c.short_name = '${COURSE_SHORT_NAME}'
-and ci.short_name = '${COURSE_INSTANCE_SHORT_NAME}';
+where c.short_name = '${COURSE_SHORT_NAME}';
 EOF
 
 psql --dbname=${TMP_DB} --file=- <<EOF
@@ -123,8 +127,7 @@ join assessments as a on (a.id = ai.assessment_id)
 join course_instances as ci on (ci.id = a.course_instance_id)
 join pl_courses as c on (c.id = ci.course_id)
 join enrollments as e on (e.user_id = ai.user_id and e.course_instance_id = ci.id)
-where c.short_name = '${COURSE_SHORT_NAME}'
-and ci.short_name = '${COURSE_INSTANCE_SHORT_NAME}';
+where c.short_name = '${COURSE_SHORT_NAME}';
 EOF
 
 # delete all the data from the tables that we copied
@@ -134,7 +137,6 @@ psql --dbname=${TMP_DB} --command="TRUNCATE submissions, variants, instance_ques
 # do the actual filtering
 
 psql --dbname=${TMP_DB} --command="DELETE FROM pl_courses WHERE short_name != '${COURSE_SHORT_NAME}';"
-psql --dbname=${TMP_DB} --command="DELETE FROM course_instances WHERE short_name != '${COURSE_INSTANCE_SHORT_NAME}';"
 psql --dbname=${TMP_DB} --command="delete from users where user_id not in (select user_id from enrollments);"
 
 # copy back the saved data

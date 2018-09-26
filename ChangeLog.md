@@ -129,12 +129,13 @@
 
   * Change `allowIssueReporting` to default to `true` (Matt West).
 
-  * Remove `element_index` from list of arguments passed to elements (Tim Bretl).
-
   * Change `pl-string-input` to include an attribute for the placeholder (Mariana Silva).
 
   * Change element documentation to add placeholder attribute to `pl-string-input` (Mariana Silva).
 
+  * Remove `element_index` from list of arguments passed to elements (Tim Bretl).
+
+  * Remove `allowIssueReporting` option in `infoCourseInstance.json` (Matt West).
 
 * __3.0.0__ - 2018-05-23
 
