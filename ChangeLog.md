@@ -99,6 +99,8 @@
 
   * Fix real-time external grading results in exam mode by disabling exam-specific message in the question score panel (Nathan Walters).
 
+  * Fix PL / scheduler linking stored procedure to allow linked exams and fix bugs (Dave Mussulman).
+
   * Change `pl-code` to display code from a source file OR inline text (Mariana Silva).
 
   * Change element names to use dashes instead of underscores (Nathan Walters).
@@ -135,6 +137,7 @@
 
   * Change element documentation to add placeholder attribute to `pl-string-input` (Mariana Silva).
 
+  * Change test cases to use templated DB for faster performance (Dave Mussulman).
 
 * __3.0.0__ - 2018-05-23
 
